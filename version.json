@@ -1,5 +1,5 @@
 {
   "version": "2.5.1",
-  "url": "https://github.com/pengbingmiao-design/browser-profile-manager/releases/download/v2.5/BrowserProfileManager_v2.5.1.exe",
+  "url": "https://github.com/pengbingmiao-design/browser-profile-manager/releases/download/v2.5.0/BrowserProfileManager_v2.5.1.exe",
   "notes": "- 窗口无闪现启动（彻底修复）\n- 启动自动清理残留临时文件\n- 更新检测直连优先 + 缓存击破\n- 下载顺序镜像（国内优先，不卡顿）\n- 修复 python310.dll 加载路径"
 }
