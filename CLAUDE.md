@@ -49,11 +49,40 @@ SHA256(MAC地址 + 计算机名 + 用户名)[:16] → 固定16位十六进制，
 - GitHub 仓库需为公开（无需 token）
 
 ### 发布新版本流程
-1. 修改 update.py 中的 APP_VERSION
-2. 打包新 exe
-3. GitHub Releases → 创建 tag → 上传 exe
-4. 更新 version.json（版本号 + 下载链接 + 更新日志）→ commit & push
-5. 所有已激活客户下次启动自动收到更新提示
+
+```
+你只需要修改两个文件：
+  1. update.py      → APP_VERSION = "2.5.0"
+  2. version.json   → version + url + notes 全部更新
+
+然后告诉 Claude：
+  "打包并发布 v2.5.0"
+```
+
+Claude 会自动完成：
+1. 确认两个文件版本号一致
+2. PyInstaller 打包 → `dist\BrowserProfileManager_v2.5.0.exe`
+3. Git commit & push（只推 version.json，源码保密）
+4. `gh release create v2.5.0` → 上传 exe
+5. 所有客户下次启动自动收到更新提示
+
+
+### ⚠️ 文件名一致性（出错会导致所有客户 404）
+
+上传到 GitHub Release 的文件名和 version.json 里的 URL 文件名**必须完全一致**，每个版本都用带 v 后缀的独立文件名：
+
+```
+version.json → "url": ".../BrowserProfileManager_v2.5.0.exe"
+gh upload    → BrowserProfileManager_v2.5.0.exe   ← 一个字不能差
+```
+
+### 测试更新系统
+```
+1. 修改 update.py → APP_VERSION = "2.4.1"（旧版本）
+2. 重新打包生成旧版 exe
+3. 确保 GitHub 上 version.json 是更高版本（如 2.4.2）
+4. 运行旧版 exe → 应弹出更新提示
+```
 
 ## 入口流程
 main() → root.withdraw() → is_activated()?
@@ -61,10 +90,26 @@ main() → root.withdraw() → is_activated()?
   └─ 是 → root.deiconify() → 更新检查 → 正常启动
 
 ## 打包
+
 - Python: 3.10 (`C:\Users\Novice_Anony\AppData\Local\Programs\Python\Python310\python.exe`)
 - PyInstaller: 6.21.0
 - 命令：`pyinstaller --onefile --noconsole --hidden-import license --hidden-import update --icon=icon.ico --add-data "icon.ico;." --name BrowserProfileManager main.py`
 - 输出：`dist\BrowserProfileManager.exe` (~9MB)
+
+### 打包后本地版本标注
+每次打包后，将 exe 重命名带版本号，方便区分：
+```
+dist\BrowserProfileManager_v2.4.2.exe
+```
+同时保留一份无版本号的 `BrowserProfileManager.exe` 用于测试。
+
+### 涉及版本号的文件（发版时需全部修改）
+| 文件 | 字段 | 说明 |
+|------|------|------|
+| `update.py:35` | `APP_VERSION = "x.y.z"` | 内置版本号，打包进 exe |
+| `version.json` | `"version"` + `"url"` + `"notes"` | 推送到 GitHub，客户端据此判断更新 |
+
+两个文件的版本号必须一致（打包时的 update.py 版本 = version.json 版本）。
 
 ## 配色
 C_PRIMARY=#1A73E8, C_DANGER=#D93025, C_BG=#EEF1F5, C_CARD=#FFFFFF
