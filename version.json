@@ -1,5 +1,5 @@
 {
-  "version": "2.4.2",
-  "url": "https://github.com/pengbingmiao-design/browser-profile-manager/releases/download/v2.4.2/BrowserProfileManager_v2.4.2.exe",
-  "notes": "- 新增程序图标\n- 激活窗口和更新窗口均显示图标"
+  "version": "2.5.0",
+  "url": "https://github.com/pengbingmiao-design/browser-profile-manager/releases/download/v2.5.0/BrowserProfileManager_v2.5.0.exe",
+  "notes": "- 全新 UI：所有按钮统一独立边框 + hover 动效\n- 网址栏自动获取网站 favicon\n- 浏览器运行状态实时检测（● 标记）\n- 窗口无闪现启动\n- 性能优化：异步 favicon、启动加速\n- 代码清理：去除死代码约 40 行"
 }
