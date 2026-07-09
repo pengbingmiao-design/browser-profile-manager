@@ -43,10 +43,31 @@ SHA256(MAC地址 + 计算机名 + 用户名)[:16] → 固定16位十六进制，
 
 启动时通过 raw.githubusercontent.com 读取 version.json，版本号高于当前则弹窗。
 
-- 立即更新 → 下载新 exe → 批处理替换 → 自动重启
+- 立即更新 → 下载新 exe（自动 P2P 校验）→ 批处理替换（最多 5 次重试）→ 自动重启
 - 稍后提醒 → 正常启动，下次再提示
 - 网络异常 → 静默跳过，不影响使用
 - GitHub 仓库需为公开（无需 token）
+
+### 下载镜像
+国内直连 GitHub 可能失败，代码内置镜像自动 fallback：
+```python
+_MIRRORS = [
+    "",                       # 0. 直连 GitHub
+    "https://gh.ddlc.top/",   # 1. ddlc 加速
+    "https://ghproxy.net/",   # 2. ghproxy 加速
+]
+```
+新增镜像需验证：`curl -sI "镜像/https://raw.githubusercontent.com/..."` 返回 200 才算可用。
+
+### 下载安全校验
+- 下载后校验 PE 文件头（`MZ`），非真 exe 自动丢弃
+- 文件大小与 Content-Length 不匹配则丢弃
+- 防止镜像返回 HTML 错误页被误装
+
+### 已知问题：PyInstaller DLL 加载失败
+杀毒软件可能拦截 PyInstaller 从 `%TEMP%\_MEI*` 加载 `python310.dll`。
+症状：`LoadLibrary: 找不到指定的模块`。
+解决：将 exe 所在目录加入杀软白名单。
 
 ### 发布新版本流程
 
