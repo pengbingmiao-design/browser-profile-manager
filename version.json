@@ -1,5 +1,5 @@
 {
   "version": "1.1.0",
-  "url": "https://github.com/pengbingmiao-design/browser-profile-manager/releases/download/v1.1/BrowserProfileManager_v1.1.0.exe",
+  "url": "https://github.com/NoviceA/browser-profile-manager/releases/download/v1.1/BrowserProfileManager_v1.1.0.exe",
   "notes": "- 窗口无闪现启动\n- 静默更新：下载→隐藏→替换→退出，目录始终只有一个exe\n- 旧版本自动隐藏+下次启动清理\n- 下载直连优先+镜像兜底\n- 关闭窗口自动清理 _MEI 临时目录"
 }
